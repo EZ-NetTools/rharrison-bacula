@@ -29,7 +29,7 @@
 # limitations under the License.
 #
 class bacula::params {
-  if $::osfamily == 'RedHat' and $::operatingsystemmajrelease >= 7 {
+  if $::osfamily == 'RedHat' and versioncmp($::operatingsystemmajrelease, '7') >= 0 {
     $bat_console_package         = 'bacula-console-bat'
     $director_mysql_package      = 'bacula-director'
     $director_postgresql_package = 'bacula-director'
