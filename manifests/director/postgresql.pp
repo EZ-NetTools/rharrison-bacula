@@ -63,10 +63,11 @@ class bacula::director::postgresql (
     /(Ubuntu|Debian)/ => '/usr/lib/bacula/grant_bacula_privileges',
     default           => '/usr/libexec/bacula/grant_postgresql_privileges',
   }
-  $db_parameters = "-Upostgres"
+  $db_parameters = ""
 
   exec { 'make_db':
     command     => "${make_db_command} ${db_parameters}",
+    user        => 'postgres',
     refreshonly => true,
     logoutput   => true,
     require     => Package[$::bacula::params::director_postgresql_package],
@@ -75,6 +76,7 @@ class bacula::director::postgresql (
   }
   exec { 'make_db_tables':
     command     => "${make_db_tables_command} ${db_parameters}",
+    user        => 'postgres',
     refreshonly => true,
     logoutput   => true,
     require     => Package[$::bacula::params::director_postgresql_package],
@@ -83,6 +85,7 @@ class bacula::director::postgresql (
   }
   exec { 'grant_db_privs':
     command     => "${grant_privs_command} ${db_parameters}",
+    user        => 'postgres',
     refreshonly => true,
     logoutput   => true,
     require     => Package[$::bacula::params::director_postgresql_package],
