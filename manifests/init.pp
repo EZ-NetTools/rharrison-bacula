@@ -192,7 +192,7 @@ class bacula (
   $db_database           = 'bacula',
   $db_host               = 'localhost',
   $db_password           = '',
-  $db_port               = '3306',
+  $db_port               = undef,
   $db_user               = '',
   $db_user_host          = undef,
   $director_password     = '',
@@ -254,6 +254,15 @@ class bacula (
     default => $manage_logwatch,
   }
 
+  $db_port_real = $db_port ? {
+    undef => $db_backend ? {
+      'mysql'      => '3306',
+      'postgresql' => '5432',
+      default      => '',
+    },
+    default => $db_port,
+  }
+
   # Validate our parameters
   # It's ugly to do it in the parent class
   class { '::bacula::params::validate':
@@ -263,7 +272,7 @@ class bacula (
     db_database           => $db_database,
     db_host               => $db_host,
     db_password           => $db_password,
-    db_port               => $db_port,
+    db_port               => $db_port_real,
     db_user               => $db_user,
     director_password     => $director_password,
     director_server       => $director_server_real,
@@ -304,7 +313,7 @@ class bacula (
     db_database       => $db_database,
     db_host           => $db_host,
     db_password       => $db_password,
-    db_port           => $db_port,
+    db_port           => $db_port_real,
     db_user           => $db_user,
     is_client         => $is_client,
     is_director       => $is_director,
@@ -325,7 +334,7 @@ class bacula (
       db_database           => $db_database,
       db_host               => $db_host,
       db_password           => $db_password,
-      db_port               => $db_port,
+      db_port               => $db_port_real,
       db_user               => $db_user,
       db_user_host          => $db_user_host,
       dir_template          => $director_template,
