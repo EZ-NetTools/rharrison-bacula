@@ -63,7 +63,7 @@ class bacula::director::postgresql (
     /(Ubuntu|Debian)/ => '/usr/lib/bacula/grant_bacula_privileges',
     default           => '/usr/libexec/bacula/grant_postgresql_privileges',
   }
-  $db_parameters = ""
+  $db_parameters = "-Upostgres"
 
   exec { 'make_db':
     command     => "${make_db_command} ${db_parameters}",
