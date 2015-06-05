@@ -205,6 +205,17 @@ class bacula::director (
           manage_db    => $manage_db,
         }
       }
+      'postgresql' : {
+        class { '::bacula::director::postgresql':
+          db_database  => $db_database,
+          db_user      => $db_user,
+          db_password  => $db_password,
+          db_port      => $db_port,
+          db_host      => $db_host,
+          db_user_host => $db_user_host,
+          manage_db    => $manage_db,
+        }
+      }
       'sqlite' : {
         class { '::bacula::director::sqlite':
           db_database => $db_database,
