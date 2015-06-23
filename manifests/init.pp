@@ -11,6 +11,9 @@
 # [*clients*]
 #   For directors, <tt>$clients</tt> is a hash of clients.  The keys are the clients while the value is a hash of parameters. The
 #   parameters accepted are the same as the <tt>bacula::client::config</tt> define.
+# [*client_name*]
+#   For clients, the name of the client to be used in the file daemon configuration. The default should work in most cases.
+#   Default: <tt>$::fqdn</tt>
 # [*console_password*]
 #   The console's password
 # [*console_template*]
@@ -186,6 +189,7 @@
 class bacula (
   $backup_catalog        = true,
   $clients               = undef,
+  $client_name           = undef,
   $console_password      = '',
   $console_template      = undef,
   $db_backend            = 'sqlite',
@@ -399,6 +403,7 @@ class bacula (
 
   if $is_client {
     class { '::bacula::client':
+      client_name       => $client_name,
       director_server   => $director_server_real,
       director_password => $director_password,
       plugin_dir        => $plugin_dir,

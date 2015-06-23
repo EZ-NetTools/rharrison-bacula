@@ -11,6 +11,8 @@
 #   If the backup job for the client should be enabled <code>'yes'</code> (default) or <code>'no'</code>.
 # [*client_schedule*]
 #   The schedule for backups to be performed.
+# [*client_address*]
+#   The address of the client. Defaults to <code>$::fqdn</code>
 # [*db_backend*]
 #   The database backend of the catalog storing information about the backup
 # [*director_password*]
@@ -103,6 +105,7 @@
 define bacula::client::config (
   $ensure              = file,
   $backup_enable       = 'yes',
+  $client_address      = $::fqdn,
   $client_schedule     = 'WeeklyCycle',
   $db_backend          = undef,
   $director_password   = '',
@@ -127,6 +130,9 @@ define bacula::client::config (
 
   if !is_domain_name($name) {
     fail "Name for client ${name} must be a fully qualified domain name"
+  }
+  if !is_domain_name($client_address) {
+    fail "Name for client_address ${client_address} must be a fully qualified domain name"
   }
 
   validate_re($backup_enable, '^(yes|Yes|no|No)$')
